@@ -7,7 +7,7 @@ Crypto coin tracker application uses latest Angular 17 features like Signals, co
 
 It uses CoinMarketCap api to fetch the latest 100 crypto coins. I subscribed to pro coinmarketcap account for free 10k api credits per month.
 
-After fetching the latest 100 crypto currencies, it uses Binance websocket stream API to get the latest values to update all the 100 coins. It uses the Angular 17 signal to update the latest coin prices from Websocket stream.
+After fetching the latest 100 crypto currencies, it uses Binance websocket stream API to get the latest values to update all the 100 coins. It uses the Angular 17 signal to update the latest coin prices from stream.
 
 Application uses NgPrime table to render the coins in table format. I personally liked NgPrime table which is very powerful module to render table in various formats.
 
