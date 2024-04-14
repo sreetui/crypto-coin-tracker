@@ -5,7 +5,7 @@ Crypto coin tracker tracks top 100 cypto coins
 # Description
 Crypto coin tracker application uses latest Angular 17 features like Signals, control blocks, standalone components, directives, Ngrx State management, RxJs operators and NgPrime P-table etc.
 
-It uses CoinMarketCap api to fetch the latest 100 crypto coins. I subscribed to pro coinmarketcap account to free 10k api credits per month.
+It uses CoinMarketCap api to fetch the latest 100 crypto coins. I subscribed to pro coinmarketcap account for free 10k api credits per month.
 
 After fetching the latest 100 crypto currencies, it uses Binance websocket stream API to get the latest values to update all the 100 coins. It uses the Angular 17 signal to update the latest coin prices from Websocket stream.
 
