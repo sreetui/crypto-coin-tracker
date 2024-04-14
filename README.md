@@ -13,7 +13,7 @@ Application uses NgPrime table to render the coins in table format. I personally
 
 Supported browsers: Chrome
 
-This is responsive application. Please check "[Crypto Coin Tracker Screenshots.pdf]([https://github.com/sreetui/one-time-loan-payment/blob/main/Loan%20Payment%20Screenshots.pdf](https://github.com/sreetui/crypto-coin-tracker/blob/main/Crypto%20Coin%20Tracker%20Screenshots.pdf))" under root project "crypto-coin-tracker" folder for detailed information
+This is responsive application. Please check "[Crypto Coin Tracker Screenshots.pdf](https://github.com/sreetui/crypto-coin-tracker/blob/main/Crypto%20Coin%20Tracker%20Screenshots.pdf)" under root project "crypto-coin-tracker" folder for detailed information
 
 Please click the below link to access application directly from AWS Cloud.
 
