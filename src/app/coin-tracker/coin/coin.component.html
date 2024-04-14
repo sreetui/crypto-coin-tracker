@@ -1,0 +1,62 @@
+<div class="card border border-0">
+    <p-table [scrollable]="true" scrollHeight="80vh" [columns]="cols" [value]="coinData()"
+        [tableStyle]="tableMinWidth()">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                    <div class="d-flex">
+                        {{ col.header }}
+                        @if(col.field === "name"){
+                        <p-columnFilter type="text" [field]="col.field" display="menu"></p-columnFilter>
+                        }
+                        @if(SORT_FIELDS.includes(col.field)){
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                        }
+                    </div>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns" [cryptoCoinTrackerSign]="col.field">
+
+                    @if(col.field === "price"){
+                    <span class="fw-bold price-change" [ngClass]="rowData['priceChangeCss']()">{{ rowData[col.field]() | currency}}</span>
+                    }@else if (NUMBER_FIELDS.includes(col.field)) {
+                        {{rowData[col.field] | number}}
+                    }
+                    @else if(col.field ==="last7Days"){
+                    <img alt="Last 7 Days" class="img-chart" [src]="rowData['last7Days']" />
+                    }
+                    @else{
+                    @if (col.field === "name") {
+                    <ng-container *ngIf="isMobile(); then nameForMobile; else nameForNonMobile">
+                    </ng-container>
+                    }
+                    @else {
+                    {{ rowData[col.field] }}
+                    }
+                    }
+                    <ng-template #nameForNonMobile>
+                        <div class="d-flex">
+                            <img [attr.alt]="rowData['symbol']" class="img-logo me-1" [src]="rowData['imageUrl']" />
+                            <span class="fw-bold me-1">{{ rowData[col.field] }}</span>
+                            <span>{{rowData['symbol']}}</span>
+                        </div>
+                    </ng-template>
+                    <ng-template #nameForMobile>
+                        <div class="d-flex">
+                            <img [attr.alt]="rowData['symbol']" class="img-logo me-1" [src]="rowData['imageUrl']" />
+                            <div class="d-flex flex-column">
+                                <span class="fw-bold">{{rowData['symbol']}}</span>
+                                <span class="fw-semibold fw-light ">{{rowData['shortedMarketCap']}}</span>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                </td>
+            </tr>
+
+        </ng-template>
+    </p-table>
+</div>

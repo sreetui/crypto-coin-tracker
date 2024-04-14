@@ -1,0 +1,12 @@
+.coin-tracer-main{
+    margin: 0 auto;
+    width: 92vw;
+}
+
+@media screen and (max-width:600px){
+    .coin-tracer-main{
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+}

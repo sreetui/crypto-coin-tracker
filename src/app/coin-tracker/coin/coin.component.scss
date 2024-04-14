@@ -1,0 +1,33 @@
+.img-logo {
+    height: 1.6rem;
+    width: 1.6rem;
+    border-radius: 0.8rem;
+}
+
+img {
+    object-fit: cover;
+}
+
+.img-chart {
+    width: 10.25rem;
+    height: 3rem;
+    text-align: center;
+    box-sizing: content-box;
+    padding-top: 2px;
+    padding-bottom: 3px;
+    filter: hue-rotate(300deg) saturate(210%) brightness(0.7) contrast(170%);
+}
+
+.price-change{
+    animation: 3s linear 0s 1 normal forwards running kxohCM;
+    color: var(--black);
+}
+.rise, .fall{
+    font-size:1rem;
+}
+.rise{
+    color: var(--green);
+}
+.fall{
+    color: var(--red);
+}
