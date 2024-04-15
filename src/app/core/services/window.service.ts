@@ -8,7 +8,7 @@ import { DOCUMENT } from '@angular/common';
 export class WindowService {
   window: (Window & typeof globalThis) | null;
 
-  constructor(@Inject(DOCUMENT) public document: Document) {
+  constructor(@Inject(DOCUMENT) private document: Document) {
     this.window = this.document.defaultView;
  }
 
