@@ -29,7 +29,7 @@ export class CoinContainerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.coinData = [];
     if (this.coinDataSubscribe && this.coinDataSubscribe.unsubscribe) {
-      this.coinDataSubscribe.unsubscribe
+      this.coinDataSubscribe.unsubscribe()
     }
   }
 }
