@@ -88,7 +88,7 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
     if (width <= 600) {
       this.onMobile();
     } else {
-      this.cols = Array.from(this.origCols);
+      this.cols = [...this.origCols];
       this.tableMinWidth.set({ 'min-width': '100rem' });
       this.isMobile.set(false);
     }
