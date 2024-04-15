@@ -1,5 +1,5 @@
 <div class="card border border-0">
-    <p-table [scrollable]="true" scrollHeight="80vh" [columns]="cols" [value]="coinData()"
+    <p-table [scrollable]="true" [loading]="loading" scrollHeight="85vh" [columns]="cols" [value]="coinData()"
         [tableStyle]="tableMinWidth()">
         <ng-template pTemplate="header" let-columns>
             <tr>

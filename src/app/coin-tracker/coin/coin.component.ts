@@ -16,6 +16,7 @@ import { CoinService } from '../services/coin.service';
 })
 export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  loading = true;
   coinWsService = inject(CoinWsService);
   coinService = inject(CoinService);
   coinPricesFromBinanceWS$ = this.coinWsService.coinPricesFromBinanceWS$;
@@ -23,8 +24,8 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input("data") coinInputData: Coin[] = [];
   cols!: Column[];
   origCols!: Column[];
-  readonly SORT_FIELDS = ["cmcRank", "price", "percentChange1hr", "percentChange24hr", "percentChange7d", "volume24hr", "marketCap"];
-  readonly NUMBER_FIELDS = ["percentChange1hr", "percentChange24hr", "percentChange7d", "volume24hr", "marketCap"];
+  readonly NUMBER_FIELDS = ["percentChange1hr", "percentChange24hr", "percentChange7d", "volume24hr", "marketCap", "circulatingSupply"];
+  readonly SORT_FIELDS = ["cmcRank", "price", ...(this.NUMBER_FIELDS.slice(0, -1))];
   coinData = signal<Coin[]>([]);
   tableMinWidth = signal({});
   isMobile = signal(true);
@@ -37,15 +38,9 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       return accumulator;
     }, "");
-    console.log("wsStreamPath=", streamPath);
     return streamPath;
   })
   ngOnInit(): void {
-    this.coinData.set(this.coinInputData.map(c => {
-      const newCoin = { ...c, price: signal<number>(0), priceChangeCss: signal<string>("") };
-      newCoin.price.set(<number>c.price);
-      return newCoin;
-    }));
     this.origCols = [
       { field: 'cmcRank', header: '#' },
       { field: 'name', header: 'Name' },
@@ -58,10 +53,17 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
       { field: 'circulatingSupply', header: 'Circulating Supply' },
       { field: 'last7Days', header: 'Last 7 Days' }
     ];
-    this.cols = this.origCols;
     if (this.coinService.isMobile()) {
       this.onMobile();
+    } else {
+      this.cols = this.origCols;
     }
+    this.coinData.set(this.coinInputData.map(c => {
+      const newCoin = { ...c, price: signal<number>(0), priceChangeCss: signal<string>("") };
+      newCoin.price.set(<number>c.price);
+      return newCoin;
+    }));
+    this.loading = false;
   }
 
   ngAfterViewInit(): void {
