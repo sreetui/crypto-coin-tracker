@@ -4,7 +4,7 @@ import { CoinFacade } from '../state/coin.facade';
 import { Coin } from '../state/model/coin.interfaces';
 import { CoinComponent } from '../coin/coin.component';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'crypto-coin-tracker-coin-container',
@@ -19,17 +19,16 @@ export class CoinContainerComponent implements OnInit, OnDestroy {
   coinFacade = inject(CoinFacade);
   loading$ = this.coinFacade.coinDataLoading$;
   coinData$ = this.coinFacade.coinData$;
-  coinDataSubscribe!: Subscription;
+  readonly destroy$ = new Subject<void>();
   ngOnInit(): void {
     this.coinFacade.loadCoinData();
-    this.coinDataSubscribe = this.coinData$.subscribe((data) => {
+    this.coinData$.pipe(takeUntil(this.destroy$)).subscribe((data) => {
       this.coinData = data;
     })
   }
   ngOnDestroy(): void {
     this.coinData = [];
-    if (this.coinDataSubscribe && this.coinDataSubscribe.unsubscribe) {
-      this.coinDataSubscribe.unsubscribe
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

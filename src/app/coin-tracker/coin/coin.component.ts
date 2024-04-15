@@ -5,7 +5,7 @@ import { TableModule } from 'primeng/table'
 import { StyleClassModule } from 'primeng/styleclass';
 import { SignDirective } from './sign.directive';
 import { CoinWsService } from '../services/coin-ws.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { CoinService } from '../services/coin.service';
 @Component({
   selector: 'crypto-coin-tracker-coin',
@@ -21,6 +21,7 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
   coinService = inject(CoinService);
   coinPricesFromBinanceWS$ = this.coinWsService.coinPricesFromBinanceWS$;
   coinPricesFromBinanceWSSubscribe!: Subscription;
+  readonly destroy$ = new Subject<void>();
   @Input("data") coinInputData: Coin[] = [];
   cols!: Column[];
   origCols!: Column[];
@@ -67,7 +68,7 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.coinPricesFromBinanceWSSubscribe = this.coinPricesFromBinanceWS$.subscribe((coinPrices) => {
+    this.coinPricesFromBinanceWS$.pipe(takeUntil(this.destroy$)).subscribe((coinPrices) => {
       const coinData = this.coinData();
       coinPrices.forEach(coinPrice => {
         const cData = coinData.find(data => data["symbol"] === coinPrice['symbol']);
@@ -103,9 +104,8 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.coinPricesFromBinanceWSSubscribe && this.coinPricesFromBinanceWSSubscribe.unsubscribe) {
-      this.coinPricesFromBinanceWSSubscribe.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }
