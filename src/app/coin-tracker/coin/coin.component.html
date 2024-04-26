@@ -26,7 +26,7 @@
                         {{rowData[col.field] | number}}
                     }
                     @else if(col.field ==="last7Days"){
-                    <img alt="Last 7 Days" class="img-chart" [src]="rowData['last7Days']" />
+                    <img alt="Last 7 Days" loading="lazy" class="img-chart" [src]="rowData['last7Days']" />
                     }
                     @else{
                     @if (col.field === "name") {
@@ -39,14 +39,14 @@
                     }
                     <ng-template #nameForNonMobile>
                         <div class="d-flex">
-                            <img [attr.alt]="rowData['symbol']" class="img-logo me-1" [src]="rowData['imageUrl']" />
+                            <img loading="lazy" [attr.alt]="rowData['symbol']" class="img-logo me-1" [src]="rowData['imageUrl']" />
                             <span class="fw-bold me-1">{{ rowData[col.field] }}</span>
                             <span>{{rowData['symbol']}}</span>
                         </div>
                     </ng-template>
                     <ng-template #nameForMobile>
                         <div class="d-flex">
-                            <img [attr.alt]="rowData['symbol']" class="img-logo me-1" [src]="rowData['imageUrl']" />
+                            <img loading="lazy" [attr.alt]="rowData['symbol']" class="img-logo me-1" [src]="rowData['imageUrl']" />
                             <div class="d-flex flex-column">
                                 <span class="fw-bold">{{rowData['symbol']}}</span>
                                 <span class="fw-semibold fw-light ">{{rowData['shortedMarketCap']}}</span>
