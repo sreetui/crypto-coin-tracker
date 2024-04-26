@@ -3,7 +3,7 @@
         <app-spinner [style]="STYLE"></app-spinner>
     </ng-container>
     @if ((loading$ | async) === false) {
-        <crypto-coin-tracker-coin [data]="coinData"></crypto-coin-tracker-coin>
+        <crypto-coin-tracker-coin [data]="coinData" [origCols]="origCols"></crypto-coin-tracker-coin>
     }@else{
         <div class="fw-bold">No Data Found</div>
     }

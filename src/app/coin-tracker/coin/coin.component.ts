@@ -23,10 +23,10 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
   coinPricesFromBinanceWSSubscribe!: Subscription;
   readonly destroy$ = new Subject<void>();
   @Input("data") coinInputData: Coin[] = [];
+  @Input("origCols") origCols: Column[] = [];
   cols!: Column[];
-  origCols!: Column[];
   readonly NUMBER_FIELDS = ["percentChange1hr", "percentChange24hr", "percentChange7d", "volume24hr", "marketCap", "circulatingSupply"];
-  readonly SORT_FIELDS = ["cmcRank", "price", ...(this.NUMBER_FIELDS.slice(0, -1))];
+  readonly SORT_FIELDS = ["cmcRank", ...(this.NUMBER_FIELDS.slice(0, -1))];
   coinData = signal<Coin[]>([]);
   tableMinWidth = signal({});
   isMobile = signal(true);
@@ -42,23 +42,11 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
     return streamPath;
   })
   ngOnInit(): void {
-    this.origCols = [
-      { field: 'cmcRank', header: '#' },
-      { field: 'name', header: 'Name' },
-      { field: 'price', header: 'Price' },
-      { field: 'percentChange1hr', header: '1h %' },
-      { field: 'percentChange24hr', header: '24h %' },
-      { field: 'percentChange7d', header: '7d %' },
-      { field: 'marketCap', header: 'Market Cap' },
-      { field: 'volume24hr', header: 'Volume(24h)' },
-      { field: 'circulatingSupply', header: 'Circulating Supply' },
-      { field: 'last7Days', header: 'Last 7 Days' }
-    ];
-    if (this.coinService.isMobile()) {
-      this.onMobile();
-    } else {
-      this.cols = this.origCols;
-    }
+    const mobile = this.coinService.isMobile();
+    this.cols = this.coinService.getColumnsByDevice(this.origCols, mobile);
+    if (mobile) {
+      this.setForMobileDevice();
+    } 
     this.coinData.set(this.coinInputData.map(c => {
       const newCoin = { ...c, price: signal<number>(0), priceChangeCss: signal<string>("") };
       newCoin.price.set(<number>c.price);
@@ -81,24 +69,22 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
     })
-    this.coinWsService.createWS(this.wsStreamPath())
+    this.coinWsService.createWS(this.wsStreamPath());
   }
 
   @HostListener('window:resize', ['$event.target.innerWidth'])
   onResize(width: number) {
-    if (width <= 600) {
-      this.onMobile();
+    const widthLT600 =  width <= 600;
+    this.cols = this.coinService.getColumnsByDevice(this.origCols, widthLT600);
+    if (widthLT600) {
+      this.setForMobileDevice();
     } else {
-      this.cols = [...this.origCols];
       this.tableMinWidth.set({ 'min-width': '100rem' });
       this.isMobile.set(false);
     }
   }
 
-  onMobile() {
-    this.cols = this.origCols.filter((col, index) => {
-      return index < 3;
-    })
+  setForMobileDevice() {
     this.isMobile.set(true);
     this.tableMinWidth.set({ 'min-width': 'auto' });
   }

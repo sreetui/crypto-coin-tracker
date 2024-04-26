@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { CoinResponse } from '../state/model/coin.interfaces';
+import { CoinResponse, Column } from '../state/model/coin.interfaces';
 import { environment } from '../../../environments/environment';
 import { WindowService } from '../../core/services/window.service';
 
@@ -23,6 +23,13 @@ export class CoinService {
       return mobile;
     }
     return mobile;
-
+  }
+  getColumnsByDevice(cols: Column[], filterForMobile: boolean){
+    if(filterForMobile){
+      return cols.filter((col, index) => {
+        return index < 3;
+      });
+    }
+    return [...cols];
   }
 }
