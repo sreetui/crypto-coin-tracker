@@ -24,12 +24,5 @@ export class CoinService {
     }
     return mobile;
   }
-  getColumnsByDevice(cols: Column[], filterForMobile: boolean){
-    if(filterForMobile){
-      return cols.filter((col, index) => {
-        return index < 3;
-      });
-    }
-    return [...cols];
-  }
+  
 }

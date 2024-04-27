@@ -43,7 +43,7 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
   })
   ngOnInit(): void {
     const mobile = this.coinService.isMobile();
-    this.cols = this.coinService.getColumnsByDevice(this.origCols, mobile);
+    this.cols = this.getColumnsByDevice(this.origCols, mobile);
     if (mobile) {
       this.setForMobileDevice();
     } 
@@ -75,13 +75,22 @@ export class CoinComponent implements OnInit, AfterViewInit, OnDestroy {
   @HostListener('window:resize', ['$event.target.innerWidth'])
   onResize(width: number) {
     const widthLT600 =  width <= 600;
-    this.cols = this.coinService.getColumnsByDevice(this.origCols, widthLT600);
+    this.cols = this.getColumnsByDevice(this.origCols, widthLT600);
     if (widthLT600) {
       this.setForMobileDevice();
     } else {
       this.tableMinWidth.set({ 'min-width': '100rem' });
       this.isMobile.set(false);
     }
+  }
+
+  getColumnsByDevice(cols: Column[], filterForMobile: boolean){
+    if(filterForMobile){
+      return cols.filter((col, index) => {
+        return index < 3;
+      });
+    }
+    return [...cols];
   }
 
   setForMobileDevice() {
